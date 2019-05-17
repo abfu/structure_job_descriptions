@@ -117,6 +117,11 @@ for i in job_title_dict['job_title']:
 # open date
 # revised date, if revised
 # annual salary
+
+#%% md
+# Get variables 'FILE_NAME' and 'JOB_CLASS_TITLE'.
+# Adding a column with the full filepath.
+
 #%%
 jb_dir = 'CityofLA/Job Bulletins'
 
@@ -147,6 +152,7 @@ for filepath in df_jb['filepath']:
 
 
 jb_title = [x.lower() for x in jb_title]
+df_jb['FILE_NAME'] = jb_files
 df_jb['JOB_CLASS_TITLE'] = jb_title
 
 #TODO capitalize first letter
@@ -170,7 +176,10 @@ df_jb['JOB_CLASS_TITLE'][0] = '311 director'
 
 #%% md
 # Extracting Class code
+
 #%%
+
+
 def get_var_class_code():
     class_code = list()
     # Selecting file
@@ -200,12 +209,15 @@ def get_var_class_code():
     return class_code
 
 #%%
+
 class_code = get_var_class_code()
 df_jb['JOB_CLASS_NO'] = class_code
 
 #%%
-# class code in different lines
-#
+# Function returns four variables 'class_code', 'open_date', 'rev_date' and 'rev_status'.
+# I ended up not using this function, as 'rev_date' and 'rev_status' was not required at this point.
+
+
 def get_vars():
     class_code = list()
     open_date = list()
@@ -280,38 +292,53 @@ class_code, open_date, rev_date, rev_status = get_vars()
 
 #%%
 df_jb['OPEN_DATE'] = open_date
-#%%
-# Testing for revised date
-for l in np.arange(len(spam)):
-    if re.search(r'(revised)', spam[l], flags=re.IGNORECASE):
-        print('rev found')
 
 #%% md
 # extracting requirements
 #%%
 def get_var_req():
     requirement = list()
-    requirement_subset = list()
-    req_regex = re.compile(r'(REQUIREMENTS?/?MINIMUM?QUALIFICATIONS?)(.*)(PROCESSNOTE?)')
     for i in df_jb['filepath']:
         # Opening file
         open_file = open(i, 'r')
         read_file = open_file.read()
         read_file = read_file.replace('\n\n', ' ')
-        for j in np.arange(len(read_file)):
-            requirement =
+        try:
+            file_requirement = (re.search(r'(?:REQUIREMENT[S]?|REQUIREMENT[S]?\/MINIMUM QUALIFICATIONS?)(.*?)(?:NOTES|PROCESS NOTES)',
+                                          read_file, flags=re.S).group(1))
+            # removing typos
+            file_requirement = file_requirement.replace('/MINIMUM QUALIFICATIONS', '')
+            file_requirement = file_requirement.replace('/ MINIMUM QUALIFICATIONS', '')
+            file_requirement = file_requirement.replace('/ MINIMUM QUALIFICATION', '')
+            file_requirement = file_requirement.replace('/MINIMUM QUALIFCATIONS', '')
+            file_requirement = file_requirement.replace('/MINIMUM QUALIFICATION', '')
+            file_requirement = file_requirement.replace('/MINIMUM REQUIREMENTS', '')
+            file_requirement = file_requirement.replace('/MIMINUMUM QUALIFICATION', '')
+            file_requirement = file_requirement.replace('/MINUMUM QUALIFICATIONS', '')
+            file_requirement = file_requirement.replace('/MINUMUM QUALIFICATIONS', '')
+            file_requirement = file_requirement.replace('/MINIMUM QUALIFICAITON', '')
+            file_requirement = file_requirement.replace('/MINUMUM QUALIFICATION', '')
+            requirement.append(file_requirement)
+        except:
+            requirement.append(None)
 
 
 
 
-    return requirement, requirement_subset
 
-
-
-
+    return requirement
 
 #%%
-spam_r = open(df_jb['filepath'][0]).read()
-spam_r = spam_r.replace('\n\n', ' ')
-spam_file = re.search(r'REQUIREMENTS(.*)(NOTES)', spam_r, flags=re.S)
-spam_file.group()
+requirement = get_var_req()
+df_jb['REQUIREMENT_SET_ID'] = requirement
+
+#%%
+for i in requirement:
+    count_none = 0
+    if i is None:
+        count_none += 1
+
+
+
+
+
