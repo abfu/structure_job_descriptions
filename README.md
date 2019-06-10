@@ -2,7 +2,7 @@
 
 ## W.I.P.
 
-### Project based on the Kaggle competition: 
+Project based on the Kaggle competition: 
 ### Data Science for Good: City of Los Angeles
 #### Help the City of Los Angeles to structure and analyze its job descriptions
 https://www.kaggle.com/c/data-science-for-good-city-of-los-angeles
