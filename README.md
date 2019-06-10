@@ -1,4 +1,4 @@
-# StructureJobDescriptions
+# Structure Job Descriptions
 
 ## W.I.P.
 
