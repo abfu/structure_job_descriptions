@@ -6,8 +6,7 @@ Project based on the Kaggle competition:
 ### Data Science for Good: City of Los Angeles
 #### Help the City of Los Angeles to structure and analyze its job descriptions
 https://www.kaggle.com/c/data-science-for-good-city-of-los-angeles
-#### HTML version of the Notebook:
-https://abfu.github.io/structure_job_descriptions/structure_and_analyse_job_descriptions_city_of_la
+
 
 #### [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/abfu/structure_job_descriptions/master)
   
